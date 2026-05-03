@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas India — Survey Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>/* Atlas India Survey — survey.css */
+:root {
+  --pink:    #E6007E;
+  --gold:    #F9B233;
+  --dark:    #111111;
+  --dark2:   #1E1E1E;
+  --mid:     #3a3a3a;
+  --muted:   #777;
+  --border:  #e2e2e0;
+  --bg:      #F7F6F2;
+  --card:    #FFFFFF;
+  --yes-bg:  #E8F5E9; --yes-bd: #388E3C; --yes-tx: #1B5E20;
+  --no-bg:   #FCE4EC; --no-bd:  #D81B60; --no-tx:  #880E4F;
+  --radius:  12px;
+  --shadow:  0 2px 16px rgba(0,0,0,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+/* Grain overlay */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* HEADER */
+.site-header {
+  position: relative; overflow: hidden;
+  background: var(--dark); color: #fff;
+}
+.header-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1a0a0a 0%, #1a1a1a 50%, #0a1a1a 100%);
+}
+.header-bg::after {
+  content: '';
+  position: absolute; top: -40%; right: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,178,51,0.12) 0%, transparent 70%);
+}
+.header-inner {
+  position: relative; z-index: 1;
+  max-width: 860px; margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-mark {
+  font-size: 1.5rem; color: var(--gold);
+  filter: drop-shadow(0 0 8px rgba(249,178,51,0.4));
+}
+.logo-name { display: block; font-size: 15px; font-weight: 600; color: #fff; letter-spacing: 0.04em; }
+.logo-tag  { display: block; font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; }
+.results-link {
+  font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none;
+  transition: color 0.2s;
+}
+.results-link:hover { color: var(--gold); }
+
+.header-hero {
+  position: relative; z-index: 1;
+  max-width: 860px; margin: 0 auto;
+  padding: 2rem 2rem 3rem;
+}
+.header-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 600; line-height: 1.0;
+  color: #fff; letter-spacing: -0.02em;
+}
+.header-hero h1 em {
+  font-style: italic; color: var(--gold);
+}
+.hero-sub {
+  margin-top: 1rem;
+  font-size: 14px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.site-header.compact .header-hero { padding-bottom: 2rem; }
+.site-header.compact h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+
+/* PROGRESS */
+.progress-rail {
+  background: var(--dark2);
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.6rem 2rem;
+  position: sticky; top: 0; z-index: 100;
+}
+.progress-bar {
+  height: 2px; background: linear-gradient(90deg, var(--gold), var(--pink));
+  border-radius: 2px; transition: width 0.4s ease; width: 0%;
+  flex: 1;
+}
+.progress-label { font-size: 11px; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+/* MAIN CONTENT */
+.survey-main, .results-main {
+  max-width: 860px; margin: 0 auto;
+  padding: 2.5rem 2rem 5rem;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* INTRO */
+.intro-card { padding: 2.5rem; }
+.intro-eyebrow {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--pink); margin-bottom: 1rem;
+}
+.intro-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 600; line-height: 1.2;
+  color: var(--dark); margin-bottom: 1.5rem;
+}
+.intro-body { font-size: 15px; color: var(--mid); line-height: 1.7; margin-bottom: 1rem; }
+.intro-steps {
+  display: flex; flex-direction: column; gap: 1rem;
+  border-left: 2px solid var(--gold); padding-left: 1.5rem;
+  margin: 1.5rem 0;
+}
+.step { display: flex; gap: 1rem; align-items: flex-start; }
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 700; color: var(--gold);
+  line-height: 1; min-width: 28px;
+}
+.step { font-size: 14px; color: var(--mid); line-height: 1.6; }
+.step strong { color: var(--dark); }
+
+.name-field { margin-top: 2rem; }
+.name-field label {
+  display: block; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.req { color: var(--pink); }
+.name-field input {
+  width: 100%; padding: 12px 16px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif;
+  color: var(--dark); background: var(--bg);
+  outline: none; transition: border-color 0.2s;
+}
+.name-field input:focus { border-color: var(--pink); }
+
+.intro-actions { margin-top: 1.5rem; }
+.intro-note { font-size: 12px; color: var(--muted); margin-top: 1.5rem; }
+
+/* BUTTONS */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 24px; border-radius: 8px;
+  background: var(--pink); color: #fff;
+  border: none; font-size: 14px; font-weight: 500;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-primary:hover { background: #c7006d; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 20px; border-radius: 8px;
+  background: transparent; color: var(--mid);
+  border: 1.5px solid var(--border);
+  font-size: 14px; font-weight: 500;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-secondary:hover { background: #f5f5f5; border-color: #ccc; }
+.btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* PAGE HEADER */
+.page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;
+}
+.page-cat-strip { display: flex; gap: 6px; flex-wrap: wrap; }
+.cat-chip {
+  display: inline-block;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  background: color-mix(in srgb, var(--chip-color) 12%, white);
+  color: var(--chip-color);
+  border: 1px solid color-mix(in srgb, var(--chip-color) 30%, white);
+}
+.page-counter { font-size: 12px; color: var(--muted); }
+
+/* QUESTION CARD */
+.qcard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.qcard:hover { box-shadow: var(--shadow); }
+.qcard--done { border-left: 3px solid var(--pink); }
+.qcard-head { display: flex; gap: 16px; margin-bottom: 1.25rem; }
+.qcard-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 700; color: var(--muted);
+  min-width: 26px; padding-top: 1px;
+}
+.qcard-text { font-size: 15px; line-height: 1.6; color: var(--dark); }
+
+.qcard-controls {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 1.5rem;
+  padding-left: 42px;
+}
+.ctrl-group {}
+.ctrl-label {
+  display: block; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.ctrl-hint { font-weight: 300; text-transform: none; letter-spacing: 0; }
+
+/* YES/NO */
+.yn-group { display: flex; gap: 6px; }
+.yn-btn {
+  flex: 1; padding: 8px 10px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: transparent;
+  font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+  color: var(--muted); cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.yn-btn:hover { border-color: var(--dark); color: var(--dark); }
+.yn-yes.yn-active { background: var(--yes-bg); border-color: var(--yes-bd); color: var(--yes-tx); }
+.yn-no.yn-active  { background: var(--no-bg);  border-color: var(--no-bd);  color: var(--no-tx); }
+.yn-icon { font-size: 11px; }
+
+/* SCALE */
+.scale-group { display: flex; gap: 5px; }
+.scale-btn {
+  flex: 1; padding: 8px 4px; border-radius: 7px; text-align: center;
+  border: 1.5px solid var(--border); background: transparent;
+  font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+  color: var(--muted); cursor: pointer; transition: all 0.15s;
+}
+.scale-btn:hover { border-color: var(--dark); color: var(--dark); }
+.scale-u.scale-active { background: #fff3e0; border-color: var(--gold); color: #7c4d00; }
+.scale-i.scale-active { background: var(--no-bg); border-color: var(--pink); color: var(--no-tx); }
+
+/* Quadrant label inline */
+.qcard-quadrant {
+  margin-top: 10px; padding-left: 42px;
+  font-size: 11px; color: var(--pink); font-weight: 500;
+}
+
+/* NAV */
+.survey-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.nav-info { font-size: 13px; color: var(--muted); }
+
+/* DONE */
+.done-card { padding: 2.5rem; text-align: center; margin-bottom: 2rem; }
+.done-check {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--yes-bg); color: var(--yes-tx);
+  font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+.done-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; color: var(--dark); margin-bottom: 0.5rem;
+}
+.done-sub { font-size: 15px; color: var(--muted); }
+
+/* EISENHOWER MATRIX */
+.matrix-section { margin-bottom: 2.5rem; }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem; color: var(--dark); margin-bottom: 0.25rem;
+}
+.section-sub { font-size: 13px; color: var(--muted); }
+.section-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;
+}
+.matrix-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: 1.25rem;
+}
+.quad { border-radius: var(--radius); padding: 1.25rem; min-height: 160px; }
+.quad-q1 { background: #fff5f5; border: 1px solid #ffcdd2; }
+.quad-q2 { background: #f0f4ff; border: 1px solid #bbcfea; }
+.quad-q3 { background: #fffde7; border: 1px solid #f5e642; }
+.quad-q4 { background: #f1f8e9; border: 1px solid #c5e1a5; }
+
+.quad-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 0.75rem; flex-wrap: wrap;
+}
+.quad-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 20px; letter-spacing: 0.06em;
+}
+.quad-q1 .quad-tag { background: #ffcdd2; color: #c62828; }
+.quad-q2 .quad-tag { background: #bbdefb; color: #1565c0; }
+.quad-q3 .quad-tag { background: #fff176; color: #f57f17; }
+.quad-q4 .quad-tag { background: #c5e1a5; color: #2e7d32; }
+.quad-header strong { font-size: 13px; font-weight: 600; }
+.quad-q1 strong { color: #c62828; }
+.quad-q2 strong { color: #1565c0; }
+.quad-q3 strong { color: #f57f17; }
+.quad-q4 strong { color: #2e7d32; }
+.quad-sub { font-size: 10px; color: var(--muted); }
+
+.quad-item {
+  font-size: 12px; color: var(--mid); line-height: 1.5;
+  padding: 5px 0; border-bottom: 0.5px solid rgba(0,0,0,0.06);
+}
+.quad-item:last-child { border-bottom: none; }
+.quad-empty { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* LOADING */
+.loading-state {
+  text-align: center; padding: 4rem 2rem; color: var(--muted);
+}
+.spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid var(--border); border-top-color: var(--pink);
+  animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* RESPONSIVE */
+@media (max-width: 620px) {
+  .header-inner { padding: 1.25rem 1rem; }
+  .header-hero  { padding: 1.5rem 1rem 2rem; }
+  .survey-main, .results-main { padding: 1.5rem 1rem 4rem; }
+  .qcard-controls { grid-template-columns: 1fr; gap: 1rem; padding-left: 0; }
+  .matrix-grid { grid-template-columns: 1fr; }
+  .survey-nav { flex-direction: column; gap: 0.75rem; align-items: stretch; }
+  .survey-nav .btn-primary, .survey-nav .btn-secondary { justify-content: center; }
+}
+</style>
+<style>/* Atlas India — results.css */
+
+/* STATS BAR */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 2.5rem;
+}
+.stat-pill {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1rem;
+  text-align: center;
+}
+.stat-n {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem; font-weight: 700; color: var(--dark);
+}
+.stat-l {
+  display: block;
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--muted);
+  margin-top: 2px;
+}
+
+/* RESULTS SECTION */
+.results-section { margin-bottom: 3rem; }
+
+/* CATEGORY GRID */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 1.25rem;
+}
+.cat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cc);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+}
+.cat-card-name {
+  font-size: 13px; font-weight: 600; color: var(--dark);
+  margin-bottom: 0.6rem; line-height: 1.4;
+}
+.cat-card-stats {
+  display: flex; gap: 1rem;
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+.cc-stat strong { color: var(--dark); }
+.cat-bar-track {
+  height: 3px; background: var(--border); border-radius: 2px;
+}
+.cat-bar-fill {
+  height: 100%; background: var(--cc); border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* QUESTION TABLE */
+.q-table {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1.25rem;
+  font-size: 13px;
+}
+.q-table-head {
+  display: grid;
+  grid-template-columns: 40px 1fr 70px 80px 90px 110px;
+  background: var(--dark); color: rgba(255,255,255,0.6);
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  padding: 0.6rem 1rem; gap: 1rem;
+}
+.q-table-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 70px 80px 90px 110px;
+  padding: 0.65rem 1rem; gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.15s;
+}
+.q-table-row:last-child { border-bottom: none; }
+.q-table-row:nth-child(even) { background: #fafaf8; }
+.q-table-row:hover { background: #f5f0ff; }
+.qt-num { font-size: 11px; color: var(--muted); font-weight: 600; }
+.qt-text { color: var(--dark); line-height: 1.4; }
+.qt-yes { font-weight: 500; color: var(--yes-tx); text-align: center; }
+.qt-score { text-align: center; color: var(--mid); }
+.qt-quad {
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 20px; text-align: center; letter-spacing: 0.04em;
+}
+.qt-Q1 { background: #ffcdd2; color: #c62828; }
+.qt-Q2 { background: #bbdefb; color: #1565c0; }
+.qt-Q3 { background: #fff176; color: #f57f17; }
+.qt-Q4 { background: #c5e1a5; color: #2e7d32; }
+.qt-none { background: var(--border); color: var(--muted); }
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center; padding: 4rem 2rem;
+}
+.empty-icon {
+  font-size: 3rem; color: var(--border); margin-bottom: 1rem;
+}
+.empty-state h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; color: var(--dark); margin-bottom: 0.5rem;
+}
+.empty-state p { font-size: 15px; color: var(--muted); }
+
+/* QI items in matrix */
+.qi-text { font-size: 12px; color: var(--mid); line-height: 1.4; }
+.qi-meta { display: flex; gap: 8px; margin-top: 3px; }
+.qi-yes  { font-size: 10px; color: var(--yes-tx); font-weight: 600; }
+.qi-score { font-size: 10px; color: var(--muted); }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .q-table-head, .q-table-row {
+    grid-template-columns: 30px 1fr 60px 60px;
+  }
+  .q-table-head span:nth-child(5),
+  .q-table-head span:nth-child(6),
+  .q-table-row .qt-score:last-of-type,
+  .q-table-row .qt-quad { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="site-header compact">
+  <div class="header-bg"></div>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-mark">▲</span>
+      <div class="logo-text">
+        <span class="logo-name">Atlas India</span>
+        <span class="logo-tag">People · Planet · Peace</span>
+      </div>
+    </div>
+    <a href="index.html" class="results-link">← Take Survey</a>
+  </div>
+  <div class="header-hero">
+    <h1>Aggregated<br><em>Results</em></h1>
+    <p class="hero-sub">Live policy priority matrix across all respondents</p>
+  </div>
+</header>
+
+<main class="results-main" id="resultsMain">
+  <div class="loading-state" id="loadingState">
+    <div class="spinner"></div>
+    <p>Loading responses…</p>
+  </div>
+</main>
+
+<script>// Atlas India — Policy Questions
+// Shared between survey.js and results.js
+const QUESTIONS = [
+  { id:1,  cat:"Economic Policy",          text:"Should the government guarantee a minimum income floor for all citizens living below the poverty line?" },
+  { id:2,  cat:"Economic Policy",          text:"Should India increase public investment in rural infrastructure (roads, electricity, water) as a top budget priority?" },
+  { id:3,  cat:"Economic Policy",          text:"Should small and medium enterprises (SMEs) receive preferential tax treatment to stimulate job creation?" },
+  { id:4,  cat:"Economic Policy",          text:"Should the government implement a windfall tax on corporations earning excess profits?" },
+  { id:5,  cat:"Economic Policy",          text:"Should India expand the MGNREGA programme to cover urban informal workers?" },
+  { id:6,  cat:"Economic Policy",          text:"Should privatisation of PSUs be halted until a social impact assessment is conducted?" },
+  { id:7,  cat:"Economic Policy",          text:"Should India adopt a wealth tax on net assets above Rs 10 crore?" },
+  { id:8,  cat:"Economic Policy",          text:"Should agricultural subsidies be replaced with direct benefit transfers to farmers?" },
+  { id:9,  cat:"Social Policy",            text:"Should the Right to Education Act be extended to cover children aged 0-18?" },
+  { id:10, cat:"Social Policy",            text:"Should the government provide free nutritious meals to all children under 5 to address malnutrition?" },
+  { id:11, cat:"Social Policy",            text:"Should a universal basic healthcare package be guaranteed as a fundamental right?" },
+  { id:12, cat:"Social Policy",            text:"Should the government implement a 50% reservation for women in local government bodies (Panchayats)?" },
+  { id:13, cat:"Social Policy",            text:"Should caste-based discrimination in hiring be penalised with criminal sanctions?" },
+  { id:14, cat:"Social Policy",            text:"Should menstrual health products be fully subsidised for girls and women below the poverty line?" },
+  { id:15, cat:"Social Policy",            text:"Should India establish a National Care Economy fund to recognise and compensate unpaid domestic labour?" },
+  { id:16, cat:"Social Policy",            text:"Should mental health services be integrated into primary healthcare at every PHC?" },
+  { id:17, cat:"Social Policy",            text:"Should India ratify and enforce the UN Convention on the Rights of Persons with Disabilities at the state level?" },
+  { id:18, cat:"Social Policy",            text:"Should inter-faith and inter-caste marriage be actively supported through state-run legal aid services?" },
+  { id:19, cat:"Environmental Policy",     text:"Should India commit to net-zero carbon emissions by 2050 with binding annual targets?" },
+  { id:20, cat:"Environmental Policy",     text:"Should air quality be declared a fundamental right enforceable in court?" },
+  { id:21, cat:"Environmental Policy",     text:"Should coal power plants be phased out within the next 15 years?" },
+  { id:22, cat:"Environmental Policy",     text:"Should single-use plastic production be banned nationally within 3 years?" },
+  { id:23, cat:"Environmental Policy",     text:"Should environmental impact assessments be mandatory and public before any major infrastructure project?" },
+  { id:24, cat:"Environmental Policy",     text:"Should India create a National Clean Water Fund to address water scarcity in BIMARU states?" },
+  { id:25, cat:"Environmental Policy",     text:"Should farmers who adopt regenerative agriculture receive direct government subsidies?" },
+  { id:26, cat:"Governance & Democracy",   text:"Should India adopt proportional representation in Lok Sabha elections?" },
+  { id:27, cat:"Governance & Democracy",   text:"Should a National Anti-Corruption Commission be established as an independent constitutional body?" },
+  { id:28, cat:"Governance & Democracy",   text:"Should the Right to Information Act be strengthened with harsher penalties for non-disclosure?" },
+  { id:29, cat:"Governance & Democracy",   text:"Should political parties be required to publish audited financial statements annually?" },
+  { id:30, cat:"Governance & Democracy",   text:"Should India implement a NOTA option with a binding re-election trigger?" },
+  { id:31, cat:"Governance & Democracy",   text:"Should Panchayat-level elections use VVPAT (paper audit trail) voting?" },
+  { id:32, cat:"Governance & Democracy",   text:"Should there be term limits for Members of Parliament (MPs)?" },
+  { id:33, cat:"Governance & Democracy",   text:"Should criminal charges bar candidates from contesting elections?" },
+  { id:34, cat:"Digital Rights & Technology", text:"Should every Indian citizen have a legally guaranteed right to affordable internet access?" },
+  { id:35, cat:"Digital Rights & Technology", text:"Should AI-generated content used in political advertising be clearly labelled?" },
+  { id:36, cat:"Digital Rights & Technology", text:"Should India enact a comprehensive Personal Data Protection law with independent enforcement?" },
+  { id:37, cat:"Digital Rights & Technology", text:"Should cybercrime against women and minors carry mandatory minimum sentences?" },
+  { id:38, cat:"Digital Rights & Technology", text:"Should government surveillance tools require judicial oversight and public reporting?" },
+  { id:39, cat:"Digital Rights & Technology", text:"Should digital literacy be a mandatory subject from Class 5 onward in all government schools?" },
+  { id:40, cat:"Foreign & Defence Policy", text:"Should India prioritise SAARC cooperation over bilateral trade deals with individual South Asian neighbours?" },
+  { id:41, cat:"Foreign & Defence Policy", text:"Should India expand its peacekeeping commitments under the United Nations?" },
+  { id:42, cat:"Foreign & Defence Policy", text:"Should the defence budget be capped at 2% of GDP to redirect resources to social spending?" },
+  { id:43, cat:"Foreign & Defence Policy", text:"Should India adopt a formal non-first-use nuclear weapons policy?" },
+  { id:44, cat:"Foreign & Defence Policy", text:"Should India pursue observer status in ASEAN as a strategic diplomatic priority?" },
+  { id:45, cat:"Monetary & Fiscal Policy", text:"Should the RBI mandate be expanded to include an employment target alongside inflation control?" },
+  { id:46, cat:"Monetary & Fiscal Policy", text:"Should India increase the fiscal deficit ceiling temporarily to fund social infrastructure?" },
+  { id:47, cat:"Monetary & Fiscal Policy", text:"Should public banking institutions be protected from full privatisation?" },
+  { id:48, cat:"Monetary & Fiscal Policy", text:"Should India introduce a financial transactions tax on high-frequency stock trading?" },
+  { id:49, cat:"Monetary & Fiscal Policy", text:"Should the GST Council simplify the slab structure to a maximum of two rates?" },
+  { id:50, cat:"Monetary & Fiscal Policy", text:"Should India adopt a sovereign wealth fund model to manage revenues from natural resources?" },
+];
+
+const CATEGORIES = [...new Set(QUESTIONS.map(q => q.cat))];
+
+const CAT_COLORS = {
+  "Economic Policy":          "#1565C0",
+  "Social Policy":            "#6A1B9A",
+  "Environmental Policy":     "#2E7D32",
+  "Governance & Democracy":   "#BF360C",
+  "Digital Rights & Technology": "#00695C",
+  "Foreign & Defence Policy": "#4527A0",
+  "Monetary & Fiscal Policy": "#558B2F",
+};
+</script>
+<script>// ============================================================
+// ATLAS INDIA — Airtable Configuration
+// ============================================================
+// Fill in your credentials below, then push to GitHub.
+//
+// HOW TO GET THESE VALUES:
+//
+// 1. AIRTABLE_API_KEY
+//    → Go to airtable.com/account
+//    → Under "API" click "Create new token"
+//    → Name it "Atlas India Survey"
+//    → Scopes: data.records:read, data.records:write
+//    → Access: your base
+//    → Copy the token (starts with "pat...")
+//
+// 2. AIRTABLE_BASE_ID
+//    → Open your Airtable base
+//    → Look at the URL: airtable.com/appXXXXXXXXXXXXXX/...
+//    → The part starting with "app..." is your Base ID
+//
+// 3. AIRTABLE_TABLE_NAME
+//    → The name of the table inside your base
+//    → Use exactly: "Survey Responses"
+//    → (We'll create this table in the setup instructions)
+//
+// ============================================================
+
+const AIRTABLE_CONFIG = {
+  apiKey:    "pat7Kn9CxSPPIeUzD.471e2aac869456d0dba3df0c46e7e3444ad670bfdfb698b03f37f03dbc7687bc",   // pat...
+  baseId:    "appSdGbCOIMBLAPDM",   // app...
+  tableName: "Survey Responses",
+};
+
+// ============================================================
+// DO NOT EDIT BELOW THIS LINE
+// ============================================================
+
+const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableName)}`;
+const AIRTABLE_HEADERS = {
+  "Authorization": `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+  "Content-Type":  "application/json",
+};
+</script>
+<script>// Atlas India — results.js
+// Reads all responses from Airtable and renders aggregated dashboard
+
+function getQuadrantKey(urgency, importance) {
+  const u=Number(urgency), i=Number(importance);
+  if (u>=3&&i>=3) return 'Q1';
+  if (u<3 &&i>=3) return 'Q2';
+  if (u>=3&&i<3)  return 'Q3';
+  return 'Q4';
+}
+
+async function fetchAllRecords() {
+  let records = [];
+  let offset  = null;
+
+  do {
+    const url = AIRTABLE_URL + '?pageSize=100' + (offset ? `&offset=${offset}` : '');
+    const res = await fetch(url, { headers: AIRTABLE_HEADERS });
+    if (!res.ok) throw new Error(`Airtable fetch failed: ${res.status}`);
+    const data = await res.json();
+    records = records.concat(data.records || []);
+    offset  = data.offset || null;
+  } while (offset);
+
+  return records;
+}
+
+function aggregate(records) {
+  // agg[qNum] = { yesCount, noCount, urgencySum, importanceSum, ratedCount, members: Set }
+  const agg = {};
+  const memberSet = new Set();
+
+  QUESTIONS.forEach(q => {
+    agg[q.id] = { yesCount:0, noCount:0, urgencySum:0, importanceSum:0, ratedCount:0, members:new Set() };
+  });
+
+  records.forEach(r => {
+    const f = r.fields;
+    const qNum = f['Q Number'];
+    if (!agg[qNum]) return;
+
+    memberSet.add(f['Member Name'] || 'Unknown');
+    agg[qNum].members.add(f['Member Name'] || 'Unknown');
+
+    if (f['Position'] === 'yes') agg[qNum].yesCount++;
+    if (f['Position'] === 'no')  agg[qNum].noCount++;
+    if (f['Urgency'] && f['Importance']) {
+      agg[qNum].urgencySum    += Number(f['Urgency']);
+      agg[qNum].importanceSum += Number(f['Importance']);
+      agg[qNum].ratedCount++;
+    }
+  });
+
+  const summaries = QUESTIONS.map(q => {
+    const d = agg[q.id];
+    const total  = d.yesCount + d.noCount;
+    const yesPct = total > 0 ? Math.round(d.yesCount/total*100) : null;
+    const avgU   = d.ratedCount > 0 ? d.urgencySum    / d.ratedCount : null;
+    const avgI   = d.ratedCount > 0 ? d.importanceSum / d.ratedCount : null;
+    const quad   = (avgU && avgI) ? getQuadrantKey(avgU, avgI) : null;
+    return { ...q, ...d, total, yesPct, avgU, avgI, quad };
+  });
+
+  return { summaries, memberCount: memberSet.size };
+}
+
+function render(summaries, memberCount) {
+  const main = document.getElementById('resultsMain');
+
+  if (!summaries.length) {
+    main.innerHTML = `<div class="empty-state card">
+      <div class="empty-icon">◌</div>
+      <h2>No responses yet</h2>
+      <p>Once team members complete the survey, results will appear here.</p>
+      <a href="index.html" class="btn-primary" style="text-decoration:none;display:inline-block;margin-top:1.5rem">Go to Survey →</a>
+    </div>`;
+    return;
+  }
+
+  const q1 = summaries.filter(s=>s.quad==='Q1').sort((a,b)=>(b.avgU+b.avgI)-(a.avgU+a.avgI));
+  const q2 = summaries.filter(s=>s.quad==='Q2').sort((a,b)=>b.avgI-a.avgI);
+  const q3 = summaries.filter(s=>s.quad==='Q3').sort((a,b)=>b.avgU-a.avgU);
+  const q4 = summaries.filter(s=>s.quad==='Q4');
+
+  function quadItems(arr) {
+    if (!arr.length) return `<span class="quad-empty">No items in this quadrant</span>`;
+    return arr.map(s=>`
+      <div class="quad-item">
+        <div class="qi-text">${s.text.length>78?s.text.slice(0,78)+'…':s.text}</div>
+        <div class="qi-meta">
+          ${s.yesPct!==null?`<span class="qi-yes">${s.yesPct}% yes</span>`:''}
+          ${s.avgU?`<span class="qi-score">U:${s.avgU.toFixed(1)} I:${s.avgI.toFixed(1)}</span>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  const catBreakdown = CATEGORIES.map(cat => {
+    const qs      = summaries.filter(s=>s.cat===cat);
+    const inQ1    = qs.filter(s=>s.quad==='Q1').length;
+    const yesTotal= qs.reduce((acc,s)=>acc+s.yesCount,0);
+    const total   = qs.reduce((acc,s)=>acc+s.total,0);
+    const yesPct  = total>0 ? Math.round(yesTotal/total*100) : 0;
+    return { cat, inQ1, yesPct };
+  }).sort((a,b)=>b.inQ1-a.inQ1);
+
+  function exportCSV() {
+    const rows=[['Q#','Category','Question','Yes Count','No Count','Yes %','Avg Urgency','Avg Importance','Quadrant']];
+    summaries.forEach(s=>{
+      rows.push([s.id,s.cat,`"${s.text}"`,s.yesCount,s.noCount,
+        s.yesPct!==null?s.yesPct+'%':'—',
+        s.avgU?s.avgU.toFixed(2):'—',
+        s.avgI?s.avgI.toFixed(2):'—',
+        s.quad||'—']);
+    });
+    const csv=rows.map(r=>r.join(',')).join('\n');
+    const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='atlas_india_results.csv';a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  window.exportCSV = exportCSV;
+
+  main.innerHTML = `
+  <div class="stats-bar">
+    <div class="stat-pill"><span class="stat-n">${memberCount}</span><span class="stat-l">Respondents</span></div>
+    <div class="stat-pill"><span class="stat-n">${q1.length}</span><span class="stat-l">Do First issues</span></div>
+    <div class="stat-pill"><span class="stat-n">${summaries.filter(s=>s.yesPct>=50).length}</span><span class="stat-l">Majority yes</span></div>
+    <div class="stat-pill"><span class="stat-n">${QUESTIONS.length}</span><span class="stat-l">Questions</span></div>
+  </div>
+
+  <section class="results-section">
+    <div class="section-header">
+      <div><h3 class="section-title">Team Eisenhower Matrix</h3><span class="section-sub">Averaged across all ${memberCount} respondents</span></div>
+      <button class="btn-secondary" onclick="location.reload()">↺ Refresh</button>
+    </div>
+    <div class="matrix-grid">
+      <div class="quad quad-q1"><div class="quad-header"><span class="quad-tag">Q1</span><strong>Do First</strong><span class="quad-sub">Urgent + Important</span></div>${quadItems(q1)}</div>
+      <div class="quad quad-q2"><div class="quad-header"><span class="quad-tag">Q2</span><strong>Schedule</strong><span class="quad-sub">Important, not urgent</span></div>${quadItems(q2)}</div>
+      <div class="quad quad-q3"><div class="quad-header"><span class="quad-tag">Q3</span><strong>Delegate</strong><span class="quad-sub">Urgent, less important</span></div>${quadItems(q3)}</div>
+      <div class="quad quad-q4"><div class="quad-header"><span class="quad-tag">Q4</span><strong>Deprioritise</strong><span class="quad-sub">Low urgency + importance</span></div>${quadItems(q4)}</div>
+    </div>
+  </section>
+
+  <section class="results-section">
+    <div class="section-header"><h3 class="section-title">Category Breakdown</h3></div>
+    <div class="cat-grid">
+      ${catBreakdown.map(c=>`
+      <div class="cat-card" style="--cc:${CAT_COLORS[c.cat]||'#888'}">
+        <div class="cat-card-name">${c.cat}</div>
+        <div class="cat-card-stats">
+          <span class="cc-stat"><strong>${c.inQ1}</strong> Do First</span>
+          <span class="cc-stat"><strong>${c.yesPct}%</strong> Yes</span>
+        </div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${c.yesPct}%"></div></div>
+      </div>`).join('')}
+    </div>
+  </section>
+
+  <section class="results-section">
+    <div class="section-header">
+      <h3 class="section-title">All 50 Questions</h3>
+      <button class="btn-secondary" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+    <div class="q-table">
+      <div class="q-table-head">
+        <span>#</span><span>Question</span><span>Yes %</span><span>Urgency</span><span>Importance</span><span>Quadrant</span>
+      </div>
+      ${summaries.map(s=>`
+      <div class="q-table-row">
+        <span class="qt-num">${s.id}</span>
+        <span class="qt-text">${s.text.length>60?s.text.slice(0,60)+'…':s.text}</span>
+        <span class="qt-yes">${s.yesPct!==null?s.yesPct+'%':'—'}</span>
+        <span class="qt-score">${s.avgU?s.avgU.toFixed(1):'—'}</span>
+        <span class="qt-score">${s.avgI?s.avgI.toFixed(1):'—'}</span>
+        <span class="qt-quad qt-${s.quad||'none'}">${s.quad||'—'}</span>
+      </div>`).join('')}
+    </div>
+  </section>`;
+}
+
+async function init() {
+  const main = document.getElementById('resultsMain');
+  try {
+    const records = await fetchAllRecords();
+    document.getElementById('loadingState').remove();
+    const { summaries, memberCount } = aggregate(records);
+    render(summaries, memberCount);
+  } catch(err) {
+    document.getElementById('loadingState').innerHTML = `
+      <div style="text-align:center;padding:3rem;color:#c62828">
+        <p style="font-size:1.5rem;margin-bottom:0.5rem">⚠ Could not load results</p>
+        <p style="color:#888;font-size:14px">${err.message}</p>
+        <p style="color:#888;font-size:13px;margin-top:0.5rem">Check that your Airtable API key and Base ID are set correctly in <code>js/config.js</code></p>
+      </div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
