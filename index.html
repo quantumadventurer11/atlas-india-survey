@@ -550,7 +550,7 @@ function render() {
   if (state.page === 0) renderIntro(main);
   else if (state.page <= totalQuestionPages()) renderQuestions(main);
   else renderDone(main);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
 }
 
 function renderIntro(main) {
@@ -677,6 +677,7 @@ function startSurvey() {
 }
 
 function goPage(dir) {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   state.page = Math.max(1, Math.min(totalQuestionPages(), state.page+dir));
   save();
   render();
