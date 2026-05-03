@@ -466,9 +466,9 @@ const CAT_COLORS = {
 // API key is stored securely in Cloudflare Worker (not exposed here)
 // Replace YOUR_WORKER_URL with your deployed Cloudflare Worker URL
 
-const WORKER_URL = "";  // Pages Function is served from same domain
-const AIRTABLE_URL  = "/records";  // Cloudflare Pages Function
-const AIRTABLE_HEADERS = { "Content-Type": "application/json" };
+
+const AIRTABLE_URL = "https://api.airtable.com/v0/appSdGbCOIMBLAPDM/" + encodeURIComponent("Survey Responses");
+const AIRTABLE_HEADERS = { "Authorization": "Bearer pat7Kn9CxSPPIeUzD.471e2aac869456d0dba3df0c46e7e3444ad670bfdfb698b03f37f03dbc7687bc", "Content-Type": "application/json" };
 </script>
 <script>// Atlas India Survey — survey.js
 // Handles rendering, state, and Airtable submission
