@@ -461,48 +461,14 @@ const CAT_COLORS = {
   "Monetary & Fiscal Policy": "#558B2F",
 };
 </script>
-<script>// ============================================================
-// ATLAS INDIA — Airtable Configuration
-// ============================================================
-// Fill in your credentials below, then push to GitHub.
-//
-// HOW TO GET THESE VALUES:
-//
-// 1. AIRTABLE_API_KEY
-//    → Go to airtable.com/account
-//    → Under "API" click "Create new token"
-//    → Name it "Atlas India Survey"
-//    → Scopes: data.records:read, data.records:write
-//    → Access: your base
-//    → Copy the token (starts with "pat...")
-//
-// 2. AIRTABLE_BASE_ID
-//    → Open your Airtable base
-//    → Look at the URL: airtable.com/appXXXXXXXXXXXXXX/...
-//    → The part starting with "app..." is your Base ID
-//
-// 3. AIRTABLE_TABLE_NAME
-//    → The name of the table inside your base
-//    → Use exactly: "Survey Responses"
-//    → (We'll create this table in the setup instructions)
-//
-// ============================================================
+<script>
+// Atlas India Survey — config.js
+// API key is stored securely in Cloudflare Worker (not exposed here)
+// Replace YOUR_WORKER_URL with your deployed Cloudflare Worker URL
 
-const AIRTABLE_CONFIG = {
-  apiKey:    "pat7Kn9CxSPPIeUzD.471e2aac869456d0dba3df0c46e7e3444ad670bfdfb698b03f37f03dbc7687bc",   // pat...
-  baseId:    "appSdGbCOIMBLAPDM",   // app...
-  tableName: "Survey Responses",
-};
-
-// ============================================================
-// DO NOT EDIT BELOW THIS LINE
-// ============================================================
-
-const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableName)}`;
-const AIRTABLE_HEADERS = {
-  "Authorization": `Bearer ${AIRTABLE_CONFIG.apiKey}`,
-  "Content-Type":  "application/json",
-};
+const WORKER_URL = "";  // Pages Function is served from same domain
+const AIRTABLE_URL  = "/records";  // Cloudflare Pages Function
+const AIRTABLE_HEADERS = { "Content-Type": "application/json" };
 </script>
 <script>// Atlas India Survey — survey.js
 // Handles rendering, state, and Airtable submission
